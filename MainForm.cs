@@ -277,7 +277,7 @@ namespace SeatArranger
         
         
         #region 方案读取、保存、打印
-                
+        
         //加载新方案
         void BtnReadNewProjectClick(object sender, EventArgs e)
         {
@@ -429,5 +429,22 @@ namespace SeatArranger
 
         #endregion
 
+        
+        
+        #region 随机排座
+        
+        void BtnRandomArrangClick(object sender, EventArgs e)
+        {
+            
+            if (MessageBox.Show("亲，随机排座会将之前的辛苦排列工作给打乱，确定执行该操作？", "提示",
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Information
+               ) == DialogResult.No) {
+                return;
+            }
+            
+            classRoom1.RandomArrangerStudents();
+        }
+        
+        #endregion
     }
 }

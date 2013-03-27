@@ -31,6 +31,12 @@ namespace SeatArranger
         //检测移动的位置点
         Point startPoint;
         
+        
+        //滚动区域平移大小
+        int paintTransX = 0;
+        int paintTransY = 0;
+        
+        
         //打印区
         public Rectangle printRange;
         
@@ -55,7 +61,7 @@ namespace SeatArranger
         {
             
             InitializeComponent();
- 
+            
 
             listStudent = new List<Student>();
             listStudentBackup = new List<Student>();
@@ -73,6 +79,10 @@ namespace SeatArranger
             this.MouseMove += new MouseEventHandler(this.roomMouseMove);
             this.MouseUp += new MouseEventHandler(this.roomMouseUp);
             //this.MouseDoubleClick += new MouseEventHandler(this.roomMouseDoubleClick);
+            
+            
+            //滑动条
+            this.AutoScrollMinSize = this.Size;
         }
 
         #endregion
@@ -100,7 +110,50 @@ namespace SeatArranger
 
             //开启抗锯齿
             g.SmoothingMode = SmoothingMode.AntiAlias;
+            
+            
+            
+            
+            // 计算可现范围，设置滚动条
+            int frameSizeX = this.Width;
+            int frameSizeY = this.Height;
+            
+            
+            if (listDesk != null && listDesk.Count > 0) {
+                
+                Desk lastDesk = listDesk[listDesk.Count - 1];
+                
+                if ((lastDesk.X + lastDesk.width) > frameSizeX)
+                    frameSizeX = lastDesk.X + lastDesk.width + 30;
+                
+                if ((lastDesk.Y + lastDesk.height) > frameSizeY)
+                    frameSizeY = lastDesk.Y + lastDesk.height + 30;
+            }
+            
+            
+            foreach (Student std in listStudent) {
+                
+                if ((std.X + std.width) > frameSizeX)
+                    frameSizeX = std.X + std.width + 30;
+                
+                if ((std.Y + std.height) > frameSizeY)
+                    frameSizeY = std.Y + std.height + 30;
+                
+            }
+            
+            this.AutoScrollMinSize = new Size(frameSizeX, frameSizeY);
+            
+            paintTransX = this.AutoScrollPosition.X;
+            paintTransY = this.AutoScrollPosition.Y;
+            
 
+            //绘制范围平移
+            g.TranslateTransform(paintTransX, paintTransY);
+            
+            
+            
+
+            //开始绘制
 
             int CandidateStartX = 242;  //候选区与教室分界线
             
@@ -146,8 +199,8 @@ namespace SeatArranger
             //绘制讲台与课桌
             InitDeskAndDais(ref g);
             
-
-
+            
+            
             //实际描绘到视图
             bufg.Render(pe.Graphics);
             g.Dispose();
@@ -340,14 +393,18 @@ namespace SeatArranger
         //鼠标按下事件
         private void roomMouseDown(object sender, MouseEventArgs e)
         {
-            //屏蔽鼠标右键
+            int eX = e.X - paintTransX;
+            int eY = e.Y - paintTransY;
+            
+            
+            //鼠标右键重置
             if (e.Button == MouseButtons.Right)
             {
                 //将学生卡位置重置
                 for (int i = 0; i < listStudent.Count; i++)
                 {
-                    if (e.X >= listStudent[i].X && e.X <= listStudent[i].X + listStudent[i].width &&
-                        e.Y >= listStudent[i].Y && e.Y <= listStudent[i].Y + listStudent[i].height)
+                    if (eX >= listStudent[i].X && eX <= listStudent[i].X + listStudent[i].width &&
+                        eY >= listStudent[i].Y && eY <= listStudent[i].Y + listStudent[i].height)
                     {
                         listStudent[i].X = listStudentBackup[i].X;
                         listStudent[i].Y = listStudentBackup[i].Y;
@@ -358,25 +415,28 @@ namespace SeatArranger
 
                 this.Invalidate();
 
-
                 return;
             }
+            
 
             foreach (Student std in listStudent)
             {
-                if (e.X >= std.X && e.X <= std.X + std.width &&
-                    e.Y >= std.Y && e.Y <= std.Y + std.height)
+                if (eX >= std.X && eX <= std.X + std.width &&
+                    eY >= std.Y && eY <= std.Y + std.height)
 
                     std.isSelected = true;
             }
 
-            startPoint = new Point(e.X, e.Y);
+            startPoint = new Point(eX, eY);
         }
 
         
         //鼠标移动事件
         private void roomMouseMove(object sender, MouseEventArgs e)
         {
+            int eX = e.X - paintTransX;
+            int eY = e.Y - paintTransY;
+            
             foreach (Student std in listStudent)
             {
                 if (std.isSelected)
@@ -384,19 +444,23 @@ namespace SeatArranger
                     int dx = startPoint.X - std.X;
                     int dy = startPoint.Y - std.Y;
 
-                    std.X = e.X - dx;
-                    std.Y = e.Y - dy;
+                    std.X = eX - dx;
+                    std.Y = eY - dy;
                 }
             }
 
-            startPoint = new Point(e.X, e.Y);
+            startPoint = new Point(eX, eY);
 
             this.Invalidate();
         }
 
+        
         //鼠标抬起事件
         private void roomMouseUp(object sender, MouseEventArgs e)
         {
+            int eX = e.X - paintTransX;
+            int eY = e.Y - paintTransY;
+            
             foreach (Student std in listStudent)
             {
                 if (std.isSelected == false)
@@ -405,8 +469,8 @@ namespace SeatArranger
                 //停靠最近的课桌
                 foreach (Desk desk in listDesk)
                 {
-                    if (e.X >= desk.X - 5 && e.X <= desk.X + desk.width - 5 &&
-                        e.Y >= desk.Y - 5 && e.Y <= desk.Y + desk.height - 5)
+                    if (eX >= desk.X - 5 && eX <= desk.X + desk.width - 5 &&
+                        eY >= desk.Y - 5 && eY <= desk.Y + desk.height - 5)
                     {
                         std.X = desk.X + 1;
                         std.Y = desk.Y + 1;
@@ -426,6 +490,9 @@ namespace SeatArranger
         //鼠标双击事件
         private void roomMouseDoubleClick(object sender, MouseEventArgs e)
         {
+            //e.X -= paintTransX;
+            //e.Y -= paintTransY;
+            
             //将学生卡位置重置
             for (int i = 0; i < listStudent.Count; i++)
             {
@@ -444,6 +511,69 @@ namespace SeatArranger
 
         #endregion
 
+        
+        
+        #region random seat
+        
+        public void RandomArrangerStudents()
+        {
+            if (listStudent == null || listStudent.Count == 0 ||
+                listDesk == null || listDesk.Count == 0 )
+                return;
+            
+            //
+            for (int i = 0; i < listStudent.Count; i++) {
+                
+                listStudent[i].X = listStudentBackup[i].X;
+                listStudent[i].Y = listStudentBackup[i].Y;
+                
+            }
+            
+            
+            //
+            int[] rdmStd = GetRandomStudentIndex(listStudent);
+            
+            for (int i = 0; i < listDesk.Count; i++) {
+                
+                int stdIndex = rdmStd[i];
+                
+                listStudent[stdIndex].X = listDesk[i].X + 1;
+                listStudent[stdIndex].Y = listDesk[i].Y + 1;
+                
+            }
+            
+            this.Invalidate();
+        }
+        
+        
+        private int[] GetRandomStudentIndex(List<Student> listStd)
+        {
+            int StdCount = listStd.Count;
+            
+            int[] stds = new int[StdCount];
+            for (int i = 0; i < StdCount; i++)
+            {
+                stds[i] = i;
+            }
+            
+            
+            Random ram = new Random();
+            
+            int currentIndex;
+            int tempValue;
+            
+            for (int i = 0; i < StdCount; i++)
+            {
+                currentIndex = ram.Next(0, StdCount - i);
+                tempValue = stds[currentIndex];
+                stds[currentIndex] = stds[StdCount - 1 - i];
+                stds[StdCount - 1 - i] = tempValue;
+            }
+            
+            return stds;
+        }
+        
+        #endregion
 
 
         #region 整体移动分配好的座位

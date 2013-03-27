@@ -30,12 +30,14 @@
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnRandomArrang = new System.Windows.Forms.Button();
             this.btnMoveLeft = new System.Windows.Forms.Button();
             this.btnMoveUp = new System.Windows.Forms.Button();
             this.btnMoveRight = new System.Windows.Forms.Button();
             this.btnMoveDown = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblShowMove = new System.Windows.Forms.Label();
+            this.classRoom1 = new SeatArranger.ClassRoom();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnPrintProject = new System.Windows.Forms.Button();
             this.btnSaveProject = new System.Windows.Forms.Button();
@@ -55,7 +57,6 @@
             this.btnPaintDesk = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.txtDeskCol = new System.Windows.Forms.TextBox();
-            this.classRoom1 = new SeatArranger.ClassRoom();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -93,18 +94,29 @@
             // panel2
             // 
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.Controls.Add(this.btnRandomArrang);
             this.panel2.Controls.Add(this.btnMoveLeft);
             this.panel2.Controls.Add(this.btnMoveUp);
             this.panel2.Controls.Add(this.btnMoveRight);
             this.panel2.Controls.Add(this.btnMoveDown);
-            this.panel2.Location = new System.Drawing.Point(562, 0);
+            this.panel2.Location = new System.Drawing.Point(523, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(131, 35);
+            this.panel2.Size = new System.Drawing.Size(183, 35);
             this.panel2.TabIndex = 6;
+            // 
+            // btnRandomArrang
+            // 
+            this.btnRandomArrang.Location = new System.Drawing.Point(6, 6);
+            this.btnRandomArrang.Name = "btnRandomArrang";
+            this.btnRandomArrang.Size = new System.Drawing.Size(44, 23);
+            this.btnRandomArrang.TabIndex = 7;
+            this.btnRandomArrang.Text = "随机";
+            this.btnRandomArrang.UseVisualStyleBackColor = true;
+            this.btnRandomArrang.Click += new System.EventHandler(this.BtnRandomArrangClick);
             // 
             // btnMoveLeft
             // 
-            this.btnMoveLeft.Location = new System.Drawing.Point(7, 6);
+            this.btnMoveLeft.Location = new System.Drawing.Point(62, 6);
             this.btnMoveLeft.Name = "btnMoveLeft";
             this.btnMoveLeft.Size = new System.Drawing.Size(25, 23);
             this.btnMoveLeft.TabIndex = 2;
@@ -114,7 +126,7 @@
             // 
             // btnMoveUp
             // 
-            this.btnMoveUp.Location = new System.Drawing.Point(38, 6);
+            this.btnMoveUp.Location = new System.Drawing.Point(92, 6);
             this.btnMoveUp.Name = "btnMoveUp";
             this.btnMoveUp.Size = new System.Drawing.Size(25, 23);
             this.btnMoveUp.TabIndex = 1;
@@ -124,7 +136,7 @@
             // 
             // btnMoveRight
             // 
-            this.btnMoveRight.Location = new System.Drawing.Point(100, 6);
+            this.btnMoveRight.Location = new System.Drawing.Point(152, 6);
             this.btnMoveRight.Name = "btnMoveRight";
             this.btnMoveRight.Size = new System.Drawing.Size(25, 23);
             this.btnMoveRight.TabIndex = 4;
@@ -134,7 +146,7 @@
             // 
             // btnMoveDown
             // 
-            this.btnMoveDown.Location = new System.Drawing.Point(69, 6);
+            this.btnMoveDown.Location = new System.Drawing.Point(122, 6);
             this.btnMoveDown.Name = "btnMoveDown";
             this.btnMoveDown.Size = new System.Drawing.Size(25, 23);
             this.btnMoveDown.TabIndex = 3;
@@ -146,25 +158,36 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.Controls.Add(this.lblShowMove);
-            this.panel1.Location = new System.Drawing.Point(699, 0);
+            this.panel1.Location = new System.Drawing.Point(708, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(32, 35);
+            this.panel1.Size = new System.Drawing.Size(23, 35);
             this.panel1.TabIndex = 5;
             // 
             // lblShowMove
             // 
             this.lblShowMove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblShowMove.Location = new System.Drawing.Point(8, 11);
+            this.lblShowMove.Location = new System.Drawing.Point(2, 11);
             this.lblShowMove.Name = "lblShowMove";
             this.lblShowMove.Size = new System.Drawing.Size(19, 16);
             this.lblShowMove.TabIndex = 0;
             this.lblShowMove.Text = "<<";
             this.lblShowMove.Click += new System.EventHandler(this.LblShowMoveClick);
             // 
+            // classRoom1
+            // 
+            this.classRoom1.AutoScroll = true;
+            this.classRoom1.AutoScrollMinSize = new System.Drawing.Size(731, 603);
+            this.classRoom1.BackColor = System.Drawing.Color.Gray;
+            this.classRoom1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.classRoom1.Location = new System.Drawing.Point(0, 0);
+            this.classRoom1.Name = "classRoom1";
+            this.classRoom1.Size = new System.Drawing.Size(731, 603);
+            this.classRoom1.TabIndex = 0;
+            // 
             // groupBox3
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+                                    | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.btnPrintProject);
             this.groupBox3.Controls.Add(this.btnSaveProject);
             this.groupBox3.Controls.Add(this.btnReadNewProject);
@@ -207,9 +230,9 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+                                    | System.Windows.Forms.AnchorStyles.Left) 
+                                    | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.btnStudentDel);
             this.groupBox2.Controls.Add(this.btnStudentAdd);
             this.groupBox2.Controls.Add(this.btnPaintStudent);
@@ -224,8 +247,8 @@
             // 
             // btnStudentDel
             // 
-            this.btnStudentDel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnStudentDel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+                                    | System.Windows.Forms.AnchorStyles.Right)));
             this.btnStudentDel.Location = new System.Drawing.Point(73, 391);
             this.btnStudentDel.Name = "btnStudentDel";
             this.btnStudentDel.Size = new System.Drawing.Size(53, 23);
@@ -236,8 +259,8 @@
             // 
             // btnStudentAdd
             // 
-            this.btnStudentAdd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnStudentAdd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+                                    | System.Windows.Forms.AnchorStyles.Right)));
             this.btnStudentAdd.Location = new System.Drawing.Point(7, 391);
             this.btnStudentAdd.Name = "btnStudentAdd";
             this.btnStudentAdd.Size = new System.Drawing.Size(53, 23);
@@ -248,8 +271,8 @@
             // 
             // btnPaintStudent
             // 
-            this.btnPaintStudent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPaintStudent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+                                    | System.Windows.Forms.AnchorStyles.Right)));
             this.btnPaintStudent.Location = new System.Drawing.Point(205, 391);
             this.btnPaintStudent.Name = "btnPaintStudent";
             this.btnPaintStudent.Size = new System.Drawing.Size(53, 23);
@@ -260,8 +283,8 @@
             // 
             // btnSaveStudentList
             // 
-            this.btnSaveStudentList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveStudentList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+                                    | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSaveStudentList.Location = new System.Drawing.Point(139, 391);
             this.btnSaveStudentList.Name = "btnSaveStudentList";
             this.btnSaveStudentList.Size = new System.Drawing.Size(53, 23);
@@ -274,14 +297,14 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+                                    | System.Windows.Forms.AnchorStyles.Left) 
+                                    | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ColOrder,
-            this.ColName,
-            this.ColSex});
+                                    this.ColOrder,
+                                    this.ColName,
+                                    this.ColSex});
             this.dataGridView1.Location = new System.Drawing.Point(7, 21);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 23;
@@ -303,15 +326,15 @@
             // 
             this.ColSex.HeaderText = "性别";
             this.ColSex.Items.AddRange(new object[] {
-            "男",
-            "女"});
+                                    "男",
+                                    "女"});
             this.ColSex.Name = "ColSex";
             this.ColSex.Width = 50;
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+                                    | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.txtDeskRow);
             this.groupBox1.Controls.Add(this.btnPaintDesk);
@@ -368,15 +391,6 @@
             this.txtDeskCol.TabIndex = 2;
             this.txtDeskCol.Text = "2/2/2/2";
             // 
-            // classRoom1
-            // 
-            this.classRoom1.BackColor = System.Drawing.Color.Gray;
-            this.classRoom1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.classRoom1.Location = new System.Drawing.Point(0, 0);
-            this.classRoom1.Name = "classRoom1";
-            this.classRoom1.Size = new System.Drawing.Size(731, 603);
-            this.classRoom1.TabIndex = 0;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -399,8 +413,8 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
-
         }
+        private System.Windows.Forms.Button btnRandomArrang;
         private System.Windows.Forms.Label lblShowMove;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
