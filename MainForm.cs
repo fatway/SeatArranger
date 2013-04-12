@@ -26,11 +26,13 @@ namespace SeatArranger
         
         void MainFormLoad(object sender, EventArgs e)
         {
+            studentSaved = Application.StartupPath + "\\Students.db";
             ReadSavedStudentList();
             
             ReadGridViewStudents();
             
             panel2.Visible = false;
+            
         }
         
         
@@ -40,8 +42,7 @@ namespace SeatArranger
             bool needAbort = false;
             bool needConform = false;
             
-            
-            //
+      
             if (!File.Exists(studentSaved)) {
                 
                 needConform = true;
@@ -366,25 +367,12 @@ namespace SeatArranger
         //打印当前布置
         void BtnPrintProjectClick(object sender, EventArgs e)
         {
-
-            Rectangle rect = classRoom1.printRange;
-            if (rect.Width == 0 || rect.Height == 0) {
+            Image prt = classRoom1.GetSeatRangeImage4Print();
+            if (prt == null)
                 return;
-            }
-            
-            
-            Image prt = new Bitmap(rect.Width, rect.Height);
-            Graphics g = Graphics.FromImage(prt);
-            
-            Point p = classRoom1.PointToScreen(classRoom1.Location);
 
-            g.CopyFromScreen(new Point(p.X + rect.X, p.Y + rect.Y),new Point(0,0),  new Size(rect.Width, rect.Height));
-            
             PrintForm printer = new PrintForm(prt);
             printer.ShowDialog();
-            
-            g.Dispose();
-            prt.Dispose();
         }
         
         #endregion

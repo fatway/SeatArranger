@@ -513,7 +513,7 @@ namespace SeatArranger
 
         
         
-        #region random seat
+        #region 随机分配座位
         
         public void RandomArrangerStudents()
         {
@@ -575,6 +575,7 @@ namespace SeatArranger
         
         #endregion
 
+        
 
         #region 整体移动分配好的座位
 
@@ -718,5 +719,55 @@ namespace SeatArranger
 
         #endregion
 
+
+
+        #region 获取打印区域图像
+
+        //获取座位范围为打印区域，不考虑学生座位没有排好的问题
+        public Image GetSeatRangeImage4Print()
+        {
+            if (listStudent == null || listStudent.Count == 0 ||
+                listDesk == null || listDesk.Count == 0)
+                return null;
+
+            //定义打印范围
+            int pLeft = listDesk[0].X;
+            int pRight = listDesk[listDesk.Count - 1].X + listDesk[0].width;
+            int pTop = dais.Y;
+            int pBottom = listDesk[listDesk.Count - 1].Y + listDesk[0].height;
+
+
+            //定义打印图像
+            Image prtImg = new Bitmap(pRight - pLeft, pBottom - pTop);
+            Graphics prtGraphics = Graphics.FromImage(prtImg);
+
+            prtGraphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+            prtGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+
+            prtGraphics.Clear(Color.White);
+
+            //绘制讲台
+            prtGraphics.DrawImage(dais.Shape, dais.X - pLeft, dais.Y - pTop);
+            prtGraphics.Flush();
+
+            //绘制课桌
+            foreach (Desk desk in listDesk)
+            {
+                prtGraphics.DrawImage(desk.Shape, desk.X - pLeft, desk.Y - pTop);
+            }
+            prtGraphics.Flush();
+            
+            //绘制学生
+            foreach (Student std in listStudent)
+            {
+                if (std.X >= pLeft && std.X <= pRight && std.Y >= pTop && std.Y <= pBottom)
+                    prtGraphics.DrawImage(std.Shape, std.X - pLeft, std.Y - pTop);
+            }
+            prtGraphics.Flush();
+
+            return prtImg;
+        }
+
+        #endregion
     }
 }
